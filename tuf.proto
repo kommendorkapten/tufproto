@@ -1,0 +1,48 @@
+syntax = "proto3";
+package dev.sigstore.tuf.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/sigstore/proto/tuf/v1";
+option java_package = "dev.sigstore.proto.tuf.v1";
+option java_multiple_files = true;
+option java_outer_classname = "TufProto";
+
+message MetaFileInfo {
+        int32 version = 1;
+        optional int32 length = 2;
+        map<string, bytes> hashes = 3;
+}
+
+message Public {
+        string public = 1;
+}
+
+message Key {
+        string keytype = 1;
+        string scheme = 2;
+        Public keyval = 3;
+}
+
+message Role {
+        repeated string keyids = 1;
+        int32 threshold = 2;
+}
+
+message RootRole {
+        string _type = 1;
+        string spec_version = 2;
+        bool consistent_snapshot = 3;
+        int32 version = 4;
+        google.protobuf.Timestamp expires = 5;
+        map<string, Key> keys = 6;
+        map<string, Role> roles = 7;
+}
+
+message SnapshotTimestampRole {
+        string _type = 1;
+        string spec_version = 2;
+        int32 version = 3;
+        google.protobuf.Timestamp expires = 4;
+        map<string, MetaFileInfo> meta = 5;
+}
